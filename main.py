@@ -5,21 +5,28 @@ import platform ,os
 from types import SimpleNamespace
 from datetime import datetime ,date
 from subprocess import run
-
-with open('config.config', 'r', encoding='utf-8') as file:
+from pathlib import Path
+print(Path.home())   
+configPath = os.path.join(Path.home(),".config","wall-calender","config.config") 
+with open(configPath, 'r', encoding='utf-8') as file:
     data = json.load(file)
     config =(SimpleNamespace(**data))
     file.close
 print(config)
 
+
 year = datetime.now().year
-weeks = date(year, 12, 28).isocalendar()[1]
+weeks = date(year, 12, 28).isocalendar()[1] 
 fileName = config.fileName
-path = "/home/hexene/Pictures"
+path = config.filepath
+backgroundPath = os.path.join(Path.home(),".config","wall-calender",config.backgroundPNG) 
 wallpaperPath = os.path.join(path,fileName)
 firstDay = date(year, 1, 1).weekday()
 lastDay = date(year, 12, 31).weekday()
-today = date.today().weekday()
+Date = date.today()
+varDate = Date.strftime("%Y-%m-%d")
+today =Date.weekday()
+print(type(varDate))
 weeks_passed = (date.today().timetuple().tm_yday - 1) // 7
 # print(today,weeks_passed)
 
@@ -40,7 +47,9 @@ else:
     
 
 def makeImg():
-    background = Image.new("RGB",(width,heigth),"#FAF0FF")
+    # background = Image.new("RGB",(width,heigth),"#FAF0FF")
+    background =Image.open(backgroundPath)
+    background = background.resize((width,heigth),Image.Resampling.LANCZOS)
     img = Image.new("RGBA",(width,heigth),(0,0,0,0))
     draw = ImageDraw.Draw(img)
     # draw.rectangle(((width/2)-widthx/2,(heigth/2)-heighty/2,(width/2)+widthx/2,(heigth/2)+heighty/2),fill=congif.color2)
@@ -50,12 +59,14 @@ def makeImg():
         days = 366
     else:
         days = 365
-
+    boxHeight = (boxSize+gap)*7
+    boxwidth = (boxSize+gap)*weeks
+    # draw.text(())
+    if config.isBlackBackground:
+        draw.rectangle(((width/2)-(boxwidth/2)-gap,(heigth/2)-(boxHeight/2)-gap, (width/2)+(boxwidth/2)+gap,(heigth/2)+(boxHeight/2)+gap),fill="black")
     for week in range(weeks):
         for day in range(7):
             # print(week,day,week*7 +day)
-            boxHeight = (boxSize+gap)*7
-            boxwidth = (boxSize+gap)*weeks
             drawCell = True
             dayPassed = False
             isToday = False
@@ -69,8 +80,9 @@ def makeImg():
             elif week == weeks_passed and day <= today:
                 dayPassed = True
 
-            if week == weeks_passed and day == today+1:
+            if week == weeks_passed and (day == today+1):
                 isToday = True
+
             if drawCell:
                 x1 = week*(boxSize+gap)+((width/2)-boxwidth/2)
                 y1 = day*(boxSize+gap)+((heigth/2)-boxHeight/2)
@@ -81,12 +93,17 @@ def makeImg():
                     draw.rectangle(cords,fill=config.color2)
                 if isToday:
                     draw.rectangle(cords,fill=config.color3)
-                    print("color3")
+                    print("color3",x1,y1)
+                
 
     background.paste(img,(0,0),img)
     background.save(f'{fileName}')
 
-makeImg()   
+makeImg()
 run([
     "cp",fileName,wallpaperPath
+])
+
+run([
+    "rm",fileName
 ])
