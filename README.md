@@ -21,7 +21,7 @@ Project Name is a Wall-Calender written in Python that performs wallpaper modifi
 Clone the repository:
 
 ```bash
-git clone https://github.com/hexene2/wall-calen
+git clone https://github.com/hexene2/wall-calender
 ```
 
 Move into the project directory:
