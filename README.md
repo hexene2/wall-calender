@@ -16,7 +16,7 @@ Project Name is a Wall-Calender written in Python that performs wallpaper modifi
 
 
 
-## 🚀 Installation
+## 🚀 Installation (linux only)
 
 Clone the repository:
 
@@ -27,7 +27,7 @@ git clone https://github.com/hexene2/wall-calender
 Move into the project directory:
 
 ```bash
-cd project-name
+cd wall-calender
 ```
 
 run setup.sh file
@@ -57,6 +57,17 @@ wall-update
 ```
 this will change the wallpaper
 
+If this does not work try this
+go to settings and change the wallpaper to 
+```bash
+~/Pictures/wallpaper.png
+```
+gnome cmd
+```bash
+gsettings set org.gnome.desktop.background picture-uri "file:///home/yourname/Pictures/wallpaper.png"
+or
+gsettings set org.gnome.desktop.background picture-uri-dark "file:///home/yourname/Pictures/wallpaper.png"
+```
 Example configuration:
 
 ```ini
