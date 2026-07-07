@@ -15,39 +15,33 @@ with open(configPath, 'r', encoding='utf-8') as file:
 print(config)
 
 
-year = datetime.now().year
-weeks = date(year, 12, 28).isocalendar()[1] 
-fileName = config.fileName
+Date = date.today()
+# Date = date.today()
+today = Date.weekday()
+year = Date.year
+weeks = date(year, 12, 28).isocalendar()[1]
+firstDay = date(year, 1, 1).weekday()
+lastDay = date(year, 12, 31).weekday()
+weeks_passed = Date.isocalendar().week
+
+
+#config paths
+fileName = config.fileName 
 path = config.filepath
 backgroundPath = os.path.join(Path.home(),".config","wall-calender",config.backgroundPNG) 
 wallpaperPath = os.path.join(path,fileName)
-firstDay = date(year, 1, 1).weekday()
-lastDay = date(year, 12, 31).weekday()
-Date = date.today()
-varDate = Date.strftime("%Y-%m-%d")
-today =Date.weekday()
-print(type(varDate))
-weeks_passed = (date.today().timetuple().tm_yday - 1) // 7
-# print(today,weeks_passed)
-
 
 congif ={"hi":"hi"}
-import json
 
 
 if platform.system() == "Windows":
-    import ctypes
-    width = ctypes.windll.user32.GetSystemMetrics(0)
-    heigth ,width = None
+    print("windows not supported")
+    
 else:
-    # Linux/macOS code here
     width = get_monitors()[0].width
     heigth = get_monitors()[0].height
 
-    
-
 def makeImg():
-    # background = Image.new("RGB",(width,heigth),"#FAF0FF")
     background =Image.open(backgroundPath)
     background = background.resize((width,heigth),Image.Resampling.LANCZOS)
     img = Image.new("RGBA",(width,heigth),(0,0,0,0))
