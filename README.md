@@ -35,6 +35,13 @@ run setup.sh file
 chmod x+ setup.sh
 ./setup.sh
 ```
+
+For Uninstalling run uninstall.sh file
+```bash
+chmod x+ uninstall.sh
+./uninstall.sh
+```
+
 this will add wall-update into /bin . which you can run
 ```bash
 wall-update
